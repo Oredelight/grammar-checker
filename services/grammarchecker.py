@@ -1,4 +1,5 @@
 import language_tool_python
+from .aicorrector import ai_corrector
 
 tool = language_tool_python.LanguageTool("en-US")
 
@@ -8,12 +9,33 @@ def check_grammar(text: str):
     issues = []
 
     for match in matches:
-        issues.append({"message": match.message})
+        start = match.offset
+        end = start + match.error_length
 
-    corrected_text = language_tool_python.utils.correct(text, matches)
+        context = text[start:end]
+
+        issues.append({"message": match.message, "context": context})
+
+    lt_first = language_tool_python.utils.correct(
+        text,
+        matches
+    )
+
+    ai_output = ai_corrector(
+        lt_first
+    )
+
+    final_matches = tool.check(
+        ai_output
+    )
+
+    final_corrected = language_tool_python.utils.correct(
+        ai_output,
+        final_matches
+    )
 
     return {
         "original": text,
-        "corrected": corrected_text,
+        "corrected": final_corrected,
         "issues": issues
     }

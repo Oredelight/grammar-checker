@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dreamy Checker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink-deep: #c2185b;
+    --pink-mid:  #e91e8c;
+    --pink-light: #f48fb1;
+    --pink-blush: #fff0f6;
+    --text-dark:  #2a0a1a;
+    --text-mid:   #7a3060;
+    --text-muted: #c090b0;
+  }
+
+  body {
+    min-height: 100vh;
+    background: #fdeef6;
+    font-family: 'Lora', Georgia, serif;
+    overflow-x: hidden;
+  }
+
+  /* ── Stars canvas ─────────────────────────────────── */
+  #stars-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Page wrap ────────────────────────────────────── */
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 52px 28px 72px;
+  }
+
+  /* ── Header ───────────────────────────────────────── */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.6rem, 7vw, 4.2rem);
+    font-weight: 700;
+    color: var(--pink-deep);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+  }
+
+  .title em {
+    font-style: italic;
+    font-weight: 700;
+    color: var(--pink-mid);
+  }
+
+  .subtitle {
+    margin-top: 12px;
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.98rem;
+    letter-spacing: 0.04em;
+  }
+
+  .header-deco {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .header-deco-line {
+    width: 70px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--pink-light));
+  }
+
+  .header-deco-line.r {
+    background: linear-gradient(to left, transparent, var(--pink-light));
+  }
+
+  .header-deco-diamond {
+    width: 5px;
+    height: 5px;
+    background: var(--pink-mid);
+    transform: rotate(45deg);
+  }
+
+  /* ── Card ─────────────────────────────────────────── */
+  .card {
+    background: rgba(255, 252, 255, 0.93);
+    border-radius: 26px;
+    border: 1.5px solid #f5c0d8;
+    box-shadow: 0 2px 40px rgba(194, 24, 91, 0.07), 0 1px 6px rgba(194, 24, 91, 0.04);
+    padding: 40px 40px 36px;
+    backdrop-filter: blur(8px);
+  }
+
+  /* ── Textarea + bow ───────────────────────────────── */
+  .textarea-wrapper {
+    position: relative;
+    margin-bottom: 14px;
+  }
+
+  .bow-wrap {
+    position: absolute;
+    left: -28px;
+    top: -28px;
+    font-size: 2.4rem;
+    line-height: 1;
+    z-index: 5;
+    animation: bowBounce 1.9s ease-in-out infinite;
+  }
+
+  @keyframes bowBounce {
+    0%, 100% { transform: translateY(0px);   }
+    40%       { transform: translateY(-10px); }
+    65%       { transform: translateY(-3px);  }
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 200px;
+    border: 2.5px solid #111;
+    border-radius: 16px;
+    padding: 20px 22px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: rgba(255, 248, 252, 0.97);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    line-height: 1.8;
+  }
+
+  textarea::placeholder {
+    color: var(--pink-light);
+    font-style: italic;
+  }
+
+  textarea:focus {
+    border-color: var(--pink-mid);
+    box-shadow: 0 0 0 4px rgba(233, 30, 140, 0.09);
+  }
+
+  /* ── Char count ───────────────────────────────────── */
+  .char-count {
+    text-align: right;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    margin-top: 7px;
+    font-family: 'Lora', Georgia, serif;
+  }
+
+  /* ── Button ───────────────────────────────────────── */
+  .btn-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 14px;
+  }
+
+  .check-btn {
+    background: linear-gradient(135deg, var(--pink-mid) 0%, var(--pink-deep) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 52px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 22px rgba(194, 24, 91, 0.28);
+  }
+
+  .check-btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 8px 32px rgba(194, 24, 91, 0.36);
+  }
+
+  .check-btn:active  { transform: scale(0.97); }
+  .check-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* ── Loading ──────────────────────────────────────── */
+  .loading {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 0 10px;
+    gap: 12px;
+  }
+
+  .loading-dots { display: flex; gap: 8px; }
+
+  .loading-dots span {
+    display: block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--pink-mid);
+    animation: dotBop 1.3s ease-in-out infinite;
+  }
+
+  .loading-dots span:nth-child(2) { animation-delay: 0.18s; background: var(--pink-light); }
+  .loading-dots span:nth-child(3) { animation-delay: 0.36s; }
+
+  @keyframes dotBop {
+    0%, 80%, 100% { transform: scale(0.65); opacity: 0.45; }
+    40%            { transform: scale(1.25); opacity: 1; }
+  }
+
+  .loading p {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-family: 'Lora', Georgia, serif;
+  }
+
+  /* ── Results ──────────────────────────────────────── */
+  .results {
+    display: none;
+    margin-top: 34px;
+    animation: fadeUp 0.45s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-block { margin-bottom: 24px; }
+
+  .result-label {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pink-deep);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .result-label-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--pink-mid);
+    flex-shrink: 0;
+  }
+
+  .result-box {
+    background: var(--pink-blush);
+    border: 1.5px solid #f5c0d8;
+    border-radius: 14px;
+    padding: 18px 22px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 0.97rem;
+    color: var(--text-dark);
+    line-height: 1.8;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #f48fb1 #fff0f6;
+  }
+
+  .result-box::-webkit-scrollbar { width: 6px; }
+  .result-box::-webkit-scrollbar-track { background: #fff0f6; border-radius: 10px; }
+  .result-box::-webkit-scrollbar-thumb { background: #f48fb1; border-radius: 10px; }
+  .result-box::-webkit-scrollbar-thumb:hover { background: var(--pink-mid); }
+
+  .result-box.corrected {
+    background: #fff0f8;
+    border-color: var(--pink-mid);
+    border-width: 2px;
+  }
+
+  .issues-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .issue-card {
+    background: var(--pink-blush);
+    border: 1px solid #f5c0d8;
+    border-radius: 12px;
+    padding: 13px 18px;
+  }
+
+  .issue-context {
+    font-weight: 600;
+    font-style: italic;
+    color: var(--pink-deep);
+    font-size: 0.91rem;
+  }
+
+  .issue-msg {
+    margin-top: 4px;
+    color: var(--text-mid);
+    font-size: 0.84rem;
+    line-height: 1.6;
+  }
+
+  .no-issues {
+    font-style: italic;
+    color: #7aaa7a;
+    font-size: 0.91rem;
+    padding: 10px 0;
+  }
+
+  /* ── Error ────────────────────────────────────────── */
+  .error-box {
+    display: none;
+    background: #fff5f5;
+    border: 1.5px solid #f5c0c0;
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: #b05050;
+    font-size: 0.9rem;
+    margin-top: 18px;
+    font-style: italic;
+  }
+
+  /* ── Footer ───────────────────────────────────────── */
+  .footer-note {
+    text-align: center;
+    margin-top: 34px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+    font-family: 'Lora', Georgia, serif;
+  }
+
+  /* ── Responsive ───────────────────────────────────── */
+  @media (max-width: 640px) {
+    .card        { padding: 28px 22px; }
+    .page-wrap   { padding: 36px 18px 56px; }
+    .title       { font-size: 2.4rem; }
+    .bow-wrap    { left: -20px; top: -20px; font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<div class="page-wrap">
+
+  <header class="header">
+    <h1 class="title">Dreamy <em>Checker</em></h1>
+    <p class="subtitle">your grammar, but make it gorgeous ✦</p>
+    <div class="header-deco">
+      <div class="header-deco-line"></div>
+      <div class="header-deco-diamond"></div>
+      <div class="header-deco-line r"></div>
+    </div>
+  </header>
+
+  <div class="card">
+
+    <div class="textarea-wrapper">
+      <div class="bow-wrap" aria-hidden="true">🎀</div>
+      <textarea id="input-text" placeholder="Type or paste your text here, darling..." rows="8"></textarea>
+    </div>
+
+    <div class="char-count"><span id="char-count">0</span> characters</div>
+
+    <div class="btn-row">
+      <button class="check-btn" id="check-btn" onclick="fixGrammar()">✦ Fix Grammar ✦</button>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <p>sprinkling magic on your words...</p>
+    </div>
+
+    <div class="error-box" id="error-box"></div>
+
+    <div class="results" id="results">
+      <div class="result-block">
+        <div class="result-label"><span class="result-label-dot"></span>Original Text</div>
+        <div class="result-box" id="original-text"></div>
+      </div>
+      <div class="result-block">
+        <div class="result-label"><span class="result-label-dot"></span>Fixed Text</div>
+        <div class="result-box corrected" id="corrected-text"></div>
+      </div>
+      <div class="result-block">
+        <div class="result-label"><span class="result-label-dot"></span>Issues Found</div>
+        <div class="issues-list" id="issues-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="footer-note">powered by dreamy grammar magic ✦ be kind to your words</p>
+
+</div>
+
+<script>
+/* ── Stars (soft & subtle) ──────────────────────────────────────────── */
+(function () {
+  const canvas = document.getElementById('stars-canvas');
+  const ctx    = canvas.getContext('2d');
+  const COLORS = ['#e91e8c','#f48fb1','#c2185b','#ce93d8','#f8bbd0','#ffffff','#ffe0f0'];
+  let stars = [];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
+  }
+
+  function initStars() {
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 8000);
+    for (let i = 0; i < count; i++) {
+      const spark = Math.random() < 0.25;
+      stars.push({
+        x:     Math.random() * canvas.width,
+        y:     Math.random() * canvas.height,
+        r:     spark ? 1.2 + Math.random() * 1.0 : 0.7 + Math.random() * 0.9,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.4 + Math.random() * 1.0,
+        amp:   0.18 + Math.random() * 0.18,
+        base:  0.10 + Math.random() * 0.14,
+        spark,
+      });
+    }
+  }
+
+  function draw(ts) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const t = ts * 0.001;
+    for (const s of stars) {
+      const alpha = s.base + s.amp * (0.5 + 0.5 * Math.sin(s.speed * t + s.phase));
+      ctx.globalAlpha = Math.min(0.55, alpha);
+      ctx.fillStyle   = s.color;
+      if (s.spark) {
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(t * 0.3 + s.phase);
+        ctx.beginPath();
+        for (let a = 0; a < 4; a++) {
+          const oa = (a / 4) * Math.PI * 2 - Math.PI / 2;
+          const ia = oa + Math.PI / 4;
+          ctx.lineTo(Math.cos(oa) * s.r * 2.2, Math.sin(oa) * s.r * 2.2);
+          ctx.lineTo(Math.cos(ia) * s.r * 0.6, Math.sin(ia) * s.r * 0.6);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      } else {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  resize(); initStars(); requestAnimationFrame(draw);
+  window.addEventListener('resize', () => { resize(); initStars(); });
+})();
+
+/* ── Char count ─────────────────────────────────────────────────────── */
+document.getElementById('input-text').addEventListener('input', function () {
+  document.getElementById('char-count').textContent = this.value.length;
+});
+
+/* ── Fix Grammar ────────────────────────────────────────────────────── */
+async function fixGrammar() {
+  const text = document.getElementById('input-text').value.trim();
+  if (!text) { showError('Please enter some text first, darling ♡'); return; }
+
+  const btn     = document.getElementById('check-btn');
+  const loading = document.getElementById('loading');
+  const results = document.getElementById('results');
+  const errBox  = document.getElementById('error-box');
+
+  btn.disabled          = true;
+  loading.style.display = 'flex';
+  results.style.display = 'none';
+  errBox.style.display  = 'none';
+
+  try {
+    const res = await fetch('/check-grammar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    if (!res.ok) throw new Error(`Server error: ${res.status}`);
+    const data = await res.json();
+
+    document.getElementById('original-text').textContent  = data.original;
+    document.getElementById('corrected-text').textContent = data.corrected;
+
+    const list = document.getElementById('issues-list');
+    list.innerHTML = '';
+    if (data.issues && data.issues.length > 0) {
+      data.issues.forEach(issue => {
+        const card = document.createElement('div');
+        card.className = 'issue-card';
+        card.innerHTML = `<div class="issue-context">"${esc(issue.context)}"</div><div class="issue-msg">${esc(issue.message)}</div>`;
+        list.appendChild(card);
+      });
+    } else {
+      list.innerHTML = '<p class="no-issues">✦ No issues found — your writing is already dreamy!</p>';
+    }
+    results.style.display = 'block';
+  } catch (err) {
+    showError('Could not reach the grammar service. Make sure the backend is running! ✦');
+    console.error(err);
+  } finally {
+    btn.disabled          = false;
+    loading.style.display = 'none';
+  }
+}
+
+function showError(msg) {
+  const b = document.getElementById('error-box');
+  b.textContent = msg;
+  b.style.display = 'block';
+}
+
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>

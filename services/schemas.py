@@ -1,11 +1,17 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class GrammarInput(BaseModel):
     text: str
+    @field_validator("text")
+    def not_empty(cls, value):
+        if not value.strip():
+            raise ValueError("Text cannot be empty")
+        return value
 
 class Issue(BaseModel):
     message: str
+    context: str
 
 class GrammarOutput(BaseModel):
     original: str
