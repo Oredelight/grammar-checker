@@ -1,0 +1,22 @@
+[
+  {
+    "input": "me and him was late",
+    "expected": "He and I were late."
+  },
+  {
+    "input": "she dont like apples",
+    "expected": "She doesn't like apples."
+  },
+  {
+    "input": "yesterday i goes to school",
+    "expected": "Yesterday I went to school."
+  },
+  {
+    "input": "the dogs is barking loudly",
+    "expected": "The dogs are barking loudly."
+  },
+  {
+    "input": "he have finished his homework",
+    "expected": "He has finished his homework."
+  }
+]

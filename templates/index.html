@@ -9,8 +9,8 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --pink-deep: #c2185b;
-    --pink-mid:  #e91e8c;
+    --pink-deep:  #c2185b;
+    --pink-mid:   #e91e8c;
     --pink-light: #f48fb1;
     --pink-blush: #fff0f6;
     --text-dark:  #2a0a1a;
@@ -25,7 +25,6 @@
     overflow-x: hidden;
   }
 
-  /* ── Stars canvas ─────────────────────────────────── */
   #stars-canvas {
     position: fixed;
     top: 0; left: 0;
@@ -34,7 +33,6 @@
     z-index: 0;
   }
 
-  /* ── Page wrap ────────────────────────────────────── */
   .page-wrap {
     position: relative;
     z-index: 1;
@@ -43,11 +41,8 @@
     padding: 52px 28px 72px;
   }
 
-  /* ── Header ───────────────────────────────────────── */
-  .header {
-    text-align: center;
-    margin-bottom: 48px;
-  }
+  /* ── Header ── */
+  .header { text-align: center; margin-bottom: 48px; }
 
   .title {
     font-family: 'Playfair Display', Georgia, serif;
@@ -58,62 +53,37 @@
     letter-spacing: 0.01em;
   }
 
-  .title em {
-    font-style: italic;
-    font-weight: 700;
-    color: var(--pink-mid);
-  }
+  .title em { font-style: italic; font-weight: 700; color: var(--pink-mid); }
 
   .subtitle {
     margin-top: 12px;
     font-family: 'Lora', Georgia, serif;
     font-style: italic;
-    font-weight: 400;
     color: var(--text-muted);
     font-size: 0.98rem;
     letter-spacing: 0.04em;
   }
 
   .header-deco {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 18px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; margin-top: 18px;
   }
+  .header-deco-line { width: 70px; height: 1px; background: linear-gradient(to right, transparent, var(--pink-light)); }
+  .header-deco-line.r { background: linear-gradient(to left, transparent, var(--pink-light)); }
+  .header-deco-diamond { width: 5px; height: 5px; background: var(--pink-mid); transform: rotate(45deg); }
 
-  .header-deco-line {
-    width: 70px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--pink-light));
-  }
-
-  .header-deco-line.r {
-    background: linear-gradient(to left, transparent, var(--pink-light));
-  }
-
-  .header-deco-diamond {
-    width: 5px;
-    height: 5px;
-    background: var(--pink-mid);
-    transform: rotate(45deg);
-  }
-
-  /* ── Card ─────────────────────────────────────────── */
+  /* ── Card ── */
   .card {
-    background: rgba(255, 252, 255, 0.93);
+    background: rgba(255,252,255,0.93);
     border-radius: 26px;
     border: 1.5px solid #f5c0d8;
-    box-shadow: 0 2px 40px rgba(194, 24, 91, 0.07), 0 1px 6px rgba(194, 24, 91, 0.04);
+    box-shadow: 0 2px 40px rgba(194,24,91,0.07), 0 1px 6px rgba(194,24,91,0.04);
     padding: 40px 40px 36px;
     backdrop-filter: blur(8px);
   }
 
-  /* ── Textarea + bow ───────────────────────────────── */
-  .textarea-wrapper {
-    position: relative;
-    margin-bottom: 14px;
-  }
+  /* ── Textarea + bow ── */
+  .textarea-wrapper { position: relative; margin-bottom: 14px; }
 
   .bow-wrap {
     position: absolute;
@@ -132,6 +102,7 @@
   }
 
   textarea {
+    display: block;
     width: 100%;
     min-height: 200px;
     border: 2.5px solid #111;
@@ -140,38 +111,66 @@
     font-family: 'Lora', Georgia, serif;
     font-size: 1rem;
     color: var(--text-dark);
-    background: rgba(255, 248, 252, 0.97);
+    background: rgba(255,248,252,0.97);
     resize: vertical;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     line-height: 1.8;
   }
 
-  textarea::placeholder {
-    color: var(--pink-light);
-    font-style: italic;
+  textarea::placeholder { color: var(--pink-light); font-style: italic; }
+  textarea:focus { border-color: var(--pink-mid); box-shadow: 0 0 0 4px rgba(233,30,140,0.09); }
+
+  /* ── Highlighted preview (shown after fix runs) ── */
+  .highlight-preview-label {
+    display: none;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 14px;
+    margin-bottom: 6px;
   }
 
-  textarea:focus {
-    border-color: var(--pink-mid);
-    box-shadow: 0 0 0 4px rgba(233, 30, 140, 0.09);
+  .highlight-preview {
+    display: none;
+    padding: 16px 22px;
+    background: rgba(255,248,252,0.97);
+    border: 2px dashed var(--pink-light);
+    border-radius: 16px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1rem;
+    color: var(--text-dark);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-wrap: break-word;
   }
 
-  /* ── Char count ───────────────────────────────────── */
-  .char-count {
-    text-align: right;
+  /* wavy pink underline for each error */
+  .highlight-preview mark {
+    background: none;
+    text-decoration: underline wavy #e91e8c;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+    color: inherit;
+    cursor: help;
+  }
+
+  /* ── Stats row ── */
+  .stats-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 7px;
     font-size: 0.76rem;
     color: var(--text-muted);
-    margin-top: 7px;
     font-family: 'Lora', Georgia, serif;
   }
 
-  /* ── Button ───────────────────────────────────────── */
-  .btn-row {
-    display: flex;
-    justify-content: center;
-    margin-top: 14px;
-  }
+  /* ── Button ── */
+  .btn-row { display: flex; justify-content: center; margin-top: 14px; }
 
   .check-btn {
     background: linear-gradient(135deg, var(--pink-mid) 0%, var(--pink-deep) 100%);
@@ -185,58 +184,30 @@
     letter-spacing: 0.06em;
     cursor: pointer;
     transition: transform 0.18s, box-shadow 0.18s;
-    box-shadow: 0 4px 22px rgba(194, 24, 91, 0.28);
+    box-shadow: 0 4px 22px rgba(194,24,91,0.28);
   }
 
-  .check-btn:hover {
-    transform: translateY(-3px) scale(1.04);
-    box-shadow: 0 8px 32px rgba(194, 24, 91, 0.36);
-  }
-
-  .check-btn:active  { transform: scale(0.97); }
+  .check-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 32px rgba(194,24,91,0.36); }
+  .check-btn:active { transform: scale(0.97); }
   .check-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  /* ── Loading ──────────────────────────────────────── */
-  .loading {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 0 10px;
-    gap: 12px;
-  }
-
+  /* ── Loading ── */
+  .loading { display: none; flex-direction: column; align-items: center; padding: 28px 0 10px; gap: 12px; }
   .loading-dots { display: flex; gap: 8px; }
-
   .loading-dots span {
-    display: block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--pink-mid);
-    animation: dotBop 1.3s ease-in-out infinite;
+    display: block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--pink-mid); animation: dotBop 1.3s ease-in-out infinite;
   }
-
   .loading-dots span:nth-child(2) { animation-delay: 0.18s; background: var(--pink-light); }
   .loading-dots span:nth-child(3) { animation-delay: 0.36s; }
-
   @keyframes dotBop {
-    0%, 80%, 100% { transform: scale(0.65); opacity: 0.45; }
-    40%            { transform: scale(1.25); opacity: 1; }
+    0%,80%,100% { transform: scale(0.65); opacity: 0.45; }
+    40% { transform: scale(1.25); opacity: 1; }
   }
+  .loading p { font-style: italic; color: var(--text-muted); font-size: 0.9rem; }
 
-  .loading p {
-    font-style: italic;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    font-family: 'Lora', Georgia, serif;
-  }
-
-  /* ── Results ──────────────────────────────────────── */
-  .results {
-    display: none;
-    margin-top: 34px;
-    animation: fadeUp 0.45s ease;
-  }
-
+  /* ── Results ── */
+  .results { display: none; margin-top: 34px; animation: fadeUp 0.45s ease; }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(14px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -244,26 +215,39 @@
 
   .result-block { margin-bottom: 24px; }
 
+  .result-label-row {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
   .result-label {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--pink-deep);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: flex; align-items: center; gap: 8px;
   }
 
-  .result-label-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--pink-mid);
-    flex-shrink: 0;
-  }
+  .result-label-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pink-mid); flex-shrink: 0; }
 
+  /* ── Copy button ── */
+  .copy-btn {
+    background: none;
+    border: 1.5px solid var(--pink-light);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 0.75rem;
+    color: var(--pink-deep);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .copy-btn:hover { background: var(--pink-mid); color: #fff; border-color: var(--pink-mid); }
+  .copy-btn.copied { background: #e8f5e9; border-color: #a5d6a7; color: #388e3c; }
+
+  /* ── Result boxes ── */
   .result-box {
     background: var(--pink-blush);
     border: 1.5px solid #f5c0d8;
@@ -278,77 +262,39 @@
     scrollbar-width: thin;
     scrollbar-color: #f48fb1 #fff0f6;
   }
-
   .result-box::-webkit-scrollbar { width: 6px; }
   .result-box::-webkit-scrollbar-track { background: #fff0f6; border-radius: 10px; }
   .result-box::-webkit-scrollbar-thumb { background: #f48fb1; border-radius: 10px; }
   .result-box::-webkit-scrollbar-thumb:hover { background: var(--pink-mid); }
+  .result-box.corrected { background: #fff0f8; border-color: var(--pink-mid); border-width: 2px; }
 
-  .result-box.corrected {
-    background: #fff0f8;
-    border-color: var(--pink-mid);
-    border-width: 2px;
-  }
-
+  /* ── Issues list ── */
   .issues-list { display: flex; flex-direction: column; gap: 10px; }
+  .issue-card { background: var(--pink-blush); border: 1px solid #f5c0d8; border-radius: 12px; padding: 13px 18px; }
+  .issue-context { font-weight: 600; font-style: italic; color: var(--pink-deep); font-size: 0.91rem; }
+  .issue-msg { margin-top: 4px; color: var(--text-mid); font-size: 0.84rem; line-height: 1.6; }
+  .no-issues { font-style: italic; color: #7aaa7a; font-size: 0.91rem; padding: 10px 0; }
 
-  .issue-card {
-    background: var(--pink-blush);
-    border: 1px solid #f5c0d8;
-    border-radius: 12px;
-    padding: 13px 18px;
-  }
-
-  .issue-context {
-    font-weight: 600;
-    font-style: italic;
-    color: var(--pink-deep);
-    font-size: 0.91rem;
-  }
-
-  .issue-msg {
-    margin-top: 4px;
-    color: var(--text-mid);
-    font-size: 0.84rem;
-    line-height: 1.6;
-  }
-
-  .no-issues {
-    font-style: italic;
-    color: #7aaa7a;
-    font-size: 0.91rem;
-    padding: 10px 0;
-  }
-
-  /* ── Error ────────────────────────────────────────── */
+  /* ── Error ── */
   .error-box {
-    display: none;
-    background: #fff5f5;
-    border: 1.5px solid #f5c0c0;
-    border-radius: 12px;
-    padding: 14px 18px;
-    color: #b05050;
-    font-size: 0.9rem;
-    margin-top: 18px;
-    font-style: italic;
+    display: none; background: #fff5f5; border: 1.5px solid #f5c0c0;
+    border-radius: 12px; padding: 14px 18px;
+    color: #b05050; font-size: 0.9rem; margin-top: 18px; font-style: italic;
   }
 
-  /* ── Footer ───────────────────────────────────────── */
+  /* ── Footer ── */
   .footer-note {
-    text-align: center;
-    margin-top: 34px;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    font-style: italic;
-    font-family: 'Lora', Georgia, serif;
+    text-align: center; margin-top: 34px;
+    font-size: 0.78rem; color: var(--text-muted);
+    font-style: italic; font-family: 'Lora', Georgia, serif;
   }
 
-  /* ── Responsive ───────────────────────────────────── */
+  /* ── Responsive ── */
   @media (max-width: 640px) {
-    .card        { padding: 28px 22px; }
-    .page-wrap   { padding: 36px 18px 56px; }
-    .title       { font-size: 2.4rem; }
-    .bow-wrap    { left: -20px; top: -20px; font-size: 1.8rem; }
+    .card { padding: 28px 22px; }
+    .page-wrap { padding: 36px 18px 56px; }
+    .title { font-size: 2.4rem; }
+    .bow-wrap { left: -20px; top: -20px; font-size: 1.8rem; }
   }
 </style>
 </head>
@@ -375,7 +321,14 @@
       <textarea id="input-text" placeholder="Type or paste your text here, darling..." rows="8"></textarea>
     </div>
 
-    <div class="char-count"><span id="char-count">0</span> characters</div>
+    <!-- Highlighted preview appears here after Fix Grammar runs -->
+    <p class="highlight-preview-label" id="preview-label">✦ Issues highlighted below</p>
+    <div class="highlight-preview" id="highlight-preview"></div>
+
+    <div class="stats-row">
+      <span>📝 <span id="word-count">0</span> words</span>
+      <span>✦ <span id="char-count">0</span> characters</span>
+    </div>
 
     <div class="btn-row">
       <button class="check-btn" id="check-btn" onclick="fixGrammar()">✦ Fix Grammar ✦</button>
@@ -389,20 +342,29 @@
     <div class="error-box" id="error-box"></div>
 
     <div class="results" id="results">
+
       <div class="result-block">
-        <div class="result-label"><span class="result-label-dot"></span>Original Text</div>
+        <div class="result-label-row">
+          <div class="result-label"><span class="result-label-dot"></span>Original Text</div>
+          <button class="copy-btn" onclick="copyText('original-text', this)">⎘ Copy</button>
+        </div>
         <div class="result-box" id="original-text"></div>
       </div>
+
       <div class="result-block">
-        <div class="result-label"><span class="result-label-dot"></span>Fixed Text</div>
+        <div class="result-label-row">
+          <div class="result-label"><span class="result-label-dot"></span>Fixed Text</div>
+          <button class="copy-btn" onclick="copyText('corrected-text', this)">⎘ Copy</button>
+        </div>
         <div class="result-box corrected" id="corrected-text"></div>
       </div>
+
       <div class="result-block">
         <div class="result-label"><span class="result-label-dot"></span>Issues Found</div>
         <div class="issues-list" id="issues-list"></div>
       </div>
-    </div>
 
+    </div>
   </div>
 
   <p class="footer-note">powered by dreamy grammar magic ✦ be kind to your words</p>
@@ -410,7 +372,7 @@
 </div>
 
 <script>
-/* ── Stars (soft & subtle) ──────────────────────────────────────────── */
+/* ── Stars ────────────────────────────────────────────────────────── */
 (function () {
   const canvas = document.getElementById('stars-canvas');
   const ctx    = canvas.getContext('2d');
@@ -428,9 +390,9 @@
     for (let i = 0; i < count; i++) {
       const spark = Math.random() < 0.25;
       stars.push({
-        x:     Math.random() * canvas.width,
-        y:     Math.random() * canvas.height,
-        r:     spark ? 1.2 + Math.random() * 1.0 : 0.7 + Math.random() * 0.9,
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: spark ? 1.2 + Math.random() * 1.0 : 0.7 + Math.random() * 0.9,
         color: COLORS[Math.floor(Math.random() * COLORS.length)],
         phase: Math.random() * Math.PI * 2,
         speed: 0.4 + Math.random() * 1.0,
@@ -476,12 +438,78 @@
   window.addEventListener('resize', () => { resize(); initStars(); });
 })();
 
-/* ── Char count ─────────────────────────────────────────────────────── */
+/* ── Word / char count ──────────────────────────────────────────── */
 document.getElementById('input-text').addEventListener('input', function () {
-  document.getElementById('char-count').textContent = this.value.length;
+  const text  = this.value;
+  const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+  document.getElementById('word-count').textContent = words;
+  document.getElementById('char-count').textContent = text.length;
+
+  // Hide preview if user edits the text after a fix
+  if (text.trim() === '') {
+    document.getElementById('highlight-preview').style.display = 'none';
+    document.getElementById('preview-label').style.display     = 'none';
+  }
 });
 
-/* ── Fix Grammar ────────────────────────────────────────────────────── */
+/* ── Build highlighted preview ──────────────────────────────────── */
+function buildHighlightPreview(text, issues) {
+  if (!issues || issues.length === 0) return;
+
+  const previewEl = document.getElementById('highlight-preview');
+  const labelEl   = document.getElementById('preview-label');
+
+  // Collect all issue contexts with their messages, deduplicated by context
+  // We'll find every occurrence of each context in the text and mark them
+  const contexts = [];
+  const seen = new Set();
+  for (const issue of issues) {
+    if (issue.context && !seen.has(issue.context)) {
+      seen.add(issue.context);
+      contexts.push({ context: issue.context, message: issue.message });
+    }
+  }
+
+  if (contexts.length === 0) return;
+
+  // Build a list of {start, end, message} spans by searching for each context
+  let spans = [];
+  for (const { context, message } of contexts) {
+    let idx = 0;
+    while (true) {
+      const pos = text.indexOf(context, idx);
+      if (pos === -1) break;
+      spans.push({ start: pos, end: pos + context.length, message });
+      idx = pos + 1;
+    }
+  }
+
+  if (spans.length === 0) return;
+
+  // Sort spans by start position, resolve overlaps (keep longest)
+  spans.sort((a, b) => a.start - b.start || b.end - a.end);
+  const merged = [];
+  for (const span of spans) {
+    if (merged.length && span.start < merged[merged.length - 1].end) continue; // skip overlapping
+    merged.push(span);
+  }
+
+  // Build HTML string
+  let html = '';
+  let cursor = 0;
+  for (const span of merged) {
+    html += escHtml(text.slice(cursor, span.start));
+    html += `<mark title="${escHtml(span.message)}">${escHtml(text.slice(span.start, span.end))}</mark>`;
+    cursor = span.end;
+  }
+  html += escHtml(text.slice(cursor));
+
+  previewEl.innerHTML = html;
+  previewEl.style.display = 'block';
+  labelEl.style.display   = 'block';
+}
+
+/* ── Fix Grammar ────────────────────────────────────────────────── */
 async function fixGrammar() {
   const text = document.getElementById('input-text').value.trim();
   if (!text) { showError('Please enter some text first, darling ♡'); return; }
@@ -496,6 +524,10 @@ async function fixGrammar() {
   results.style.display = 'none';
   errBox.style.display  = 'none';
 
+  // Hide old preview
+  document.getElementById('highlight-preview').style.display = 'none';
+  document.getElementById('preview-label').style.display     = 'none';
+
   try {
     const res = await fetch('/check-grammar', {
       method: 'POST',
@@ -504,6 +536,9 @@ async function fixGrammar() {
     });
     if (!res.ok) throw new Error(`Server error: ${res.status}`);
     const data = await res.json();
+
+    // Show highlighted preview of original text with issues underlined
+    buildHighlightPreview(data.original, data.issues);
 
     document.getElementById('original-text').textContent  = data.original;
     document.getElementById('corrected-text').textContent = data.corrected;
@@ -514,7 +549,7 @@ async function fixGrammar() {
       data.issues.forEach(issue => {
         const card = document.createElement('div');
         card.className = 'issue-card';
-        card.innerHTML = `<div class="issue-context">"${esc(issue.context)}"</div><div class="issue-msg">${esc(issue.message)}</div>`;
+        card.innerHTML = `<div class="issue-context">"${escHtml(issue.context)}"</div><div class="issue-msg">${escHtml(issue.message)}</div>`;
         list.appendChild(card);
       });
     } else {
@@ -530,13 +565,28 @@ async function fixGrammar() {
   }
 }
 
+/* ── Copy ───────────────────────────────────────────────────────── */
+async function copyText(elementId, btn) {
+  const text = document.getElementById(elementId).textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '⎘ Copy'; btn.classList.remove('copied'); }, 2000);
+  } catch {
+    btn.textContent = 'Failed';
+    setTimeout(() => { btn.textContent = '⎘ Copy'; }, 2000);
+  }
+}
+
+/* ── Helpers ────────────────────────────────────────────────────── */
 function showError(msg) {
   const b = document.getElementById('error-box');
   b.textContent = msg;
   b.style.display = 'block';
 }
 
-function esc(str) {
+function escHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
