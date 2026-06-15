@@ -30,8 +30,8 @@ def ai_corrector(text: str):
 
     for chunk in chunks:
 
-        prompt = f"Fix grammar: {chunk}"
-
+        prompt = f"Fix grammatical errors in this sentence: {chunk}"
+        
         inputs = tokenizer(
             prompt,
             return_tensors="pt",
@@ -39,12 +39,14 @@ def ai_corrector(text: str):
             max_length=512
         ).to(device)
 
-        outputs = model.generate(
-            **inputs,
-            max_new_tokens=256,
-            num_beams=5,
-            early_stopping=True
-        )
+        with torch.no_grad():
+            outputs = model.generate(
+                **inputs,
+                max_new_tokens=128,
+                num_beams=1,
+                early_stopping=True,
+                repetition_penalty=1.3
+            )
 
         corrected = tokenizer.decode(
             outputs[0],

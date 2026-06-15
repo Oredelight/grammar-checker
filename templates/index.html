@@ -345,14 +345,6 @@
 
       <div class="result-block">
         <div class="result-label-row">
-          <div class="result-label"><span class="result-label-dot"></span>Original Text</div>
-          <button class="copy-btn" onclick="copyText('original-text', this)">⎘ Copy</button>
-        </div>
-        <div class="result-box" id="original-text"></div>
-      </div>
-
-      <div class="result-block">
-        <div class="result-label-row">
           <div class="result-label"><span class="result-label-dot"></span>Fixed Text</div>
           <button class="copy-btn" onclick="copyText('corrected-text', this)">⎘ Copy</button>
         </div>
@@ -540,7 +532,6 @@ async function fixGrammar() {
     // Show highlighted preview of original text with issues underlined
     buildHighlightPreview(data.original, data.issues);
 
-    document.getElementById('original-text').textContent  = data.original;
     document.getElementById('corrected-text').textContent = data.corrected;
 
     const list = document.getElementById('issues-list');

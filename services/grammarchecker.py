@@ -25,7 +25,7 @@ def check_grammar(text: str):
         matches
     )
 
-    ai_output = ai_corrector(f"Fix grammar: {lt_first}")
+    ai_output = ai_corrector(lt_first)
 
     final_matches = tool.check(
         ai_output
