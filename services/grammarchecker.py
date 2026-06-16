@@ -1,10 +1,18 @@
 import language_tool_python
 from .aicorrector import ai_corrector
+from .rules import apply_rules
 
 tool = language_tool_python.LanguageTool("en-US", config={'maxSpellingSuggestions': 5})
-tool.enabled_rules = {'PASSIVE_VOICE', 'OXFORD_SPELLING_ADJECTIVES'}
+tool.disabled_rules  = {'WHITESPACE_RULE', 'PUNCTUATION_PARAGRAPH_END'}
+tool.enabled_rules   = {
+    'SUBJECT_VERB_AGREEMENT',
+    'EN_SUBJECT_VERB_AGREEMENT',
+    'HE_VERB_AGR',
+    'PLURAL_VERB_AFTER_THIS',
+}
 
 def check_grammar(text: str):
+    text = apply_rules(text)
     matches = tool.check(text)
 
     SKIP_RULES = {'WHITESPACE_RULE', 'PUNCTUATION_PARAGRAPH_END'}

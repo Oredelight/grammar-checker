@@ -1,502 +1,276 @@
 [
-  {
+    {
+        "category": "subject_verb_agreement",
+        "input": "She go to school every day.",
+        "expected": "She goes to school every day."
+    },
+    {
+        "category": "subject_verb_agreement",
+        "input": "The boys plays football.",
+        "expected": "The boys play football."
+    },
+    {
+        "category": "subject_verb_agreement",
+        "input": "Me and him was late.",
+        "expected": "He and I were late."
+    },
+    {
+        "category": "subject_verb_agreement",
+        "input": "They is waiting outside.",
+        "expected": "They are waiting outside."
+    },
+    {
+        "category": "subject_verb_agreement",
+        "input": "The dogs barks loudly.",
+        "expected": "The dogs bark loudly."
+    },
+
+    {
+        "category": "tense",
+        "input": "I seen him yesterday.",
+        "expected": "I saw him yesterday."
+    },
+    {
+        "category": "tense",
+        "input": "She has went home.",
+        "expected": "She has gone home."
+    },
+    {
+        "category": "tense",
+        "input": "We was eating dinner.",
+        "expected": "We were eating dinner."
+    },
+    {
+        "category": "tense",
+        "input": "He don't know what happened.",
+        "expected": "He doesn't know what happened."
+    },
+    {
+        "category": "tense",
+        "input": "They has finished the work.",
+        "expected": "They have finished the work."
+    },
+
+    {
+        "category": "articles",
+        "input": "I bought apple.",
+        "expected": "I bought an apple."
+    },
+    {
+        "category": "articles",
+        "input": "She is engineer.",
+        "expected": "She is an engineer."
+    },
+    {
+        "category": "articles",
+        "input": "He has umbrella.",
+        "expected": "He has an umbrella."
+    },
+    {
+        "category": "articles",
+        "input": "I saw elephant.",
+        "expected": "I saw an elephant."
+    },
+    {
+        "category": "articles",
+        "input": "She adopted cat.",
+        "expected": "She adopted a cat."
+    },
+
+    {
+        "category": "prepositions",
+        "input": "I am good in mathematics.",
+        "expected": "I am good at mathematics."
+    },
+    {
+        "category": "prepositions",
+        "input": "She arrived to the airport.",
+        "expected": "She arrived at the airport."
+    },
+    {
+        "category": "prepositions",
+        "input": "He is interested on music.",
+        "expected": "He is interested in music."
+    },
+    {
+        "category": "prepositions",
+        "input": "We discussed about the issue.",
+        "expected": "We discussed the issue."
+    },
+    {
+        "category": "prepositions",
+        "input": "She depends of her parents.",
+        "expected": "She depends on her parents."
+    },
+
+    {
+        "category": "pronouns",
+        "input": "Her and me went there.",
+        "expected": "She and I went there."
+    },
+    {
+        "category": "pronouns",
+        "input": "Me and John are friends.",
+        "expected": "John and I are friends."
+    },
+    {
+        "category": "pronouns",
+        "input": "Him likes football.",
+        "expected": "He likes football."
+    },
+    {
+        "category": "pronouns",
+        "input": "Us went to the market.",
+        "expected": "We went to the market."
+    },
+    {
+        "category": "pronouns",
+        "input": "Them are coming soon.",
+        "expected": "They are coming soon."
+    },
+
+    {
+        "category": "capitalization",
+        "input": "i live in lagos.",
+        "expected": "I live in Lagos."
+    },
+    {
+        "category": "capitalization",
+        "input": "john visited nigeria.",
+        "expected": "John visited Nigeria."
+    },
+    {
+        "category": "capitalization",
+        "input": "monday is busy.",
+        "expected": "Monday is busy."
+    },
+    {
+        "category": "capitalization",
+        "input": "i met peter yesterday.",
+        "expected": "I met Peter yesterday."
+    },
+    {
+        "category": "capitalization",
+        "input": "paris is beautiful.",
+        "expected": "Paris is beautiful."
+    },
+
+    {
+        "category": "punctuation",
+        "input": "hello how are you",
+        "expected": "Hello, how are you?"
+    },
+    {
+        "category": "punctuation",
+        "input": "what is your name",
+        "expected": "What is your name?"
+    },
+    {
+        "category": "punctuation",
+        "input": "i am fine thanks",
+        "expected": "I am fine, thanks."
+    },
+    {
+        "category": "punctuation",
+        "input": "where are you going",
+        "expected": "Where are you going?"
+    },
+    {
+        "category": "punctuation",
+        "input": "please sit down",
+        "expected": "Please sit down."
+    },
+
+    {
+        "category": "spelling",
+        "input": "I recieved the package.",
+        "expected": "I received the package."
+    },
+    {
+        "category": "spelling",
+        "input": "This is definately correct.",
+        "expected": "This is definitely correct."
+    },
+    {
+        "category": "spelling",
+        "input": "The goverment announced changes.",
+        "expected": "The government announced changes."
+    },
+    {
+        "category": "spelling",
+        "input": "I seperated the files.",
+        "expected": "I separated the files."
+    },
+    {
+        "category": "spelling",
+        "input": "We accomodated everyone.",
+        "expected": "We accommodated everyone."
+    },
+
+    {
+        "category": "possessives",
+        "input": "it is smith's car",
+        "expected": "It is Smith's car."
+    },
+    {
+        "category": "possessives",
+        "input": "that is johns book",
+        "expected": "That is John's book."
+    },
+    {
+        "category": "possessives",
+        "input": "marys bag is missing",
+        "expected": "Mary's bag is missing."
+    },
+    {
+        "category": "possessives",
+        "input": "this is peters laptop",
+        "expected": "This is Peter's laptop."
+    },
+    {
+        "category": "possessives",
+        "input": "its james bicycle",
+        "expected": "It's James' bicycle."
+    },
+
+    {
+        "category": "mixed",
+        "input": "me and john was going market yesterday",
+        "expected": "John and I were going to the market yesterday."
+    },
+    {
+        "category": "mixed",
+        "input": "she dont have umbrella",
+        "expected": "She doesn't have an umbrella."
+    },
+    {
+        "category": "mixed",
+        "input": "i seen mary at airport",
+        "expected": "I saw Mary at the airport."
+    },
+    {
+        "category": "mixed",
+        "input": "them is waiting outside",
+        "expected": "They are waiting outside."
+    },
+    {
+        "category": "mixed",
+        "input": "john and me was late",
+        "expected": "John and I were late."
+    },
+    {
+    "category": "pronouns",
+    "input": "Me and her is going.",
+    "expected": "She and I are going."
+    },
+    {
+    "category": "tense",
+    "input": "They seen the movie.",
+    "expected": "They saw the movie."
+    },
+    {
     "category": "mixed",
-    "input": "i seen him he was go market ",
-    "expected": "I saw him. He was going to the market."
-  },
-  {
-    "category": "pronouns",
-    "input": "Me and him went there. ",
-    "expected": "He and I went there."
-  },
-  {
-    "category": "prepositions",
-    "input": "They discussed about it.",
-    "expected": "They discussed it."
-  },
-  {
-    "category": "articles",
-    "input": "He bought car. ",
-    "expected": "He bought a car."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "They plays football.",
-    "expected": "They play football."
-  },
-  {
-    "category": "spelling",
-    "input": "He commited mistake.  ",
-    "expected": "He committed mistake."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo. ",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "pronouns",
-    "input": "Her is my friend.",
-    "expected": "She is my friend."
-  },
-  {
-    "category": "tense",
-    "input": "She eat breakfast early.",
-    "expected": "She ate breakfast early."
-  },
-  {
-    "category": "pronouns",
-    "input": "I gave it to she.  ",
-    "expected": "I gave it to her."
-  },
-  {
-    "category": "spelling",
-    "input": "I recieved your mesage.",
-    "expected": "I received your message."
-  },
-  {
-    "category": "pronouns",
-    "input": "Them are coming. ",
-    "expected": "They are coming."
-  },
-  {
-    "category": "prepositions",
-    "input": "We arrived to school.",
-    "expected": "We arrived at school."
-  },
-  {
-    "category": "articles",
-    "input": "We went to hospital.",
-    "expected": "We went to the hospital."
-  },
-  {
-    "category": "prepositions",
-    "input": "They discussed about it. ",
-    "expected": "They discussed it."
-  },
-  {
-    "category": "spelling",
-    "input": "They definetly won.",
-    "expected": "They definitely won."
-  },
-  {
-    "category": "tense",
-    "input": "Yesterday I goes to school.",
-    "expected": "Yesterday I went to school."
-  },
-  {
-    "category": "articles",
-    "input": "He bought car.",
-    "expected": "He bought a car."
-  },
-  {
-    "category": "punctuation",
-    "input": "Wait what is this ",
-    "expected": "Wait, what is this?"
-  },
-  {
-    "category": "pronouns",
-    "input": "I gave it to she. ",
-    "expected": "I gave it to her."
-  },
-  {
-    "category": "mixed",
-    "input": "they is playing football",
-    "expected": "They are playing football."
-  },
-  {
-    "category": "mixed",
-    "input": "i seen him he was go market ",
-    "expected": "I saw him. He was going to the market."
-  },
-  {
-    "category": "mixed",
-    "input": "we was happy we wins",
-    "expected": "We were happy we won."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "They plays football.  ",
-    "expected": "They play football."
-  },
-  {
-    "category": "tense",
-    "input": "They was playing football.",
-    "expected": "They were playing football."
-  },
-  {
-    "category": "articles",
-    "input": "She is engineer.",
-    "expected": "She is an engineer."
-  },
-  {
-    "category": "pronouns",
-    "input": "Him and me is late. ",
-    "expected": "He and I are late."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "The dogs runs fast.  ",
-    "expected": "The dogs run fast."
-  },
-  {
-    "category": "mixed",
-    "input": "i seen him he was go market ",
-    "expected": "I saw him. He was going to the market."
-  },
-  {
-    "category": "pronouns",
-    "input": "Them are coming. ",
-    "expected": "They are coming."
-  },
-  {
-    "category": "pronouns",
-    "input": "I gave it to she. ",
-    "expected": "I gave it to her."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "She go to school daily. ",
-    "expected": "She goes to school daily."
-  },
-  {
-    "category": "tense",
-    "input": "She eat breakfast early.  ",
-    "expected": "She ate breakfast early."
-  },
-  {
-    "category": "tense",
-    "input": "I seen him yesterday.",
-    "expected": "I saw him yesterday."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "She go to school daily.",
-    "expected": "She goes to school daily."
-  },
-  {
-    "category": "tense",
-    "input": "She eat breakfast early. ",
-    "expected": "She ate breakfast early."
-  },
-  {
-    "category": "spelling",
-    "input": "He commited mistake.",
-    "expected": "He committed mistake."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo.  ",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "pronouns",
-    "input": "I gave it to she.",
-    "expected": "I gave it to her."
-  },
-  {
-    "category": "prepositions",
-    "input": "She married with him.",
-    "expected": "She is married to him."
-  },
-  {
-    "category": "tense",
-    "input": "They was playing football. ",
-    "expected": "They were playing football."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo. ",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "The dogs runs fast.  ",
-    "expected": "The dogs run fast."
-  },
-  {
-    "category": "tense",
-    "input": "She eat breakfast early.    ",
-    "expected": "She ate breakfast early."
-  },
-  {
-    "category": "spelling",
-    "input": "I alwasy forget. ",
-    "expected": "I always forget."
-  },
-  {
-    "category": "punctuation",
-    "input": "I like apples bananas oranges ",
-    "expected": "I like apples, bananas, and oranges."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "The dogs runs fast.   ",
-    "expected": "The dogs run fast."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo.",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "tense",
-    "input": "They was playing football.  ",
-    "expected": "They were playing football."
-  },
-  {
-    "category": "articles",
-    "input": "She is best student.",
-    "expected": "She is the best student."
-  },
-  {
-    "category": "spelling",
-    "input": "They definetly won. ",
-    "expected": "They definitely won."
-  },
-  {
-    "category": "prepositions",
-    "input": "She is good in math. ",
-    "expected": "She is good at math."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "She go to school daily. ",
-    "expected": "She goes to school daily."
-  },
-  {
-    "category": "punctuation",
-    "input": "Wow this is crazy I love it",
-    "expected": "Wow, this is crazy! I love it."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo.    ",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "articles",
-    "input": "She is engineer. ",
-    "expected": "She is an engineer."
-  },
-  {
-    "category": "pronouns",
-    "input": "Him and me is late.",
-    "expected": "He and I are late."
-  },
-  {
-    "category": "tense",
-    "input": "She eat breakfast early.   ",
-    "expected": "She ate breakfast early."
-  },
-  {
-    "category": "tense",
-    "input": "Yesterday I goes to school.  ",
-    "expected": "Yesterday I went to school."
-  },
-  {
-    "category": "pronouns",
-    "input": "Him and me is late. ",
-    "expected": "He and I are late."
-  },
-  {
-    "category": "mixed",
-    "input": "me and him was late",
-    "expected": "He and I were late."
-  },
-  {
-    "category": "tense",
-    "input": "She eat breakfast early. ",
-    "expected": "She ate breakfast early."
-  },
-  {
-    "category": "mixed",
-    "input": "she dont like apples ",
-    "expected": "She doesn't like apples."
-  },
-  {
-    "category": "punctuation",
-    "input": "Wait what is this",
-    "expected": "Wait, what is this?"
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "The dogs runs fast.",
-    "expected": "The dogs run fast."
-  },
-  {
-    "category": "punctuation",
-    "input": "Wait what is this ",
-    "expected": "Wait, what is this?"
-  },
-  {
-    "category": "mixed",
-    "input": "she dont like apples ",
-    "expected": "She doesn't like apples."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "He do his work. ",
-    "expected": "He does his work."
-  },
-  {
-    "category": "tense",
-    "input": "We was late for class.",
-    "expected": "We were late for class."
-  },
-  {
-    "category": "articles",
-    "input": "She is engineer.  ",
-    "expected": "She is an engineer."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "He do his work.",
-    "expected": "He does his work."
-  },
-  {
-    "category": "tense",
-    "input": "She eat breakfast early. ",
-    "expected": "She ate breakfast early."
-  },
-  {
-    "category": "punctuation",
-    "input": "I like apples bananas oranges",
-    "expected": "I like apples, bananas, and oranges."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo.  ",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "She go to school daily. ",
-    "expected": "She goes to school daily."
-  },
-  {
-    "category": "pronouns",
-    "input": "Them are coming.  ",
-    "expected": "They are coming."
-  },
-  {
-    "category": "mixed",
-    "input": "they is playing football ",
-    "expected": "They are playing football."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo.    ",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "spelling",
-    "input": "She beleives in me.",
-    "expected": "She believes in me."
-  },
-  {
-    "category": "tense",
-    "input": "Yesterday I goes to school. ",
-    "expected": "Yesterday I went to school."
-  },
-  {
-    "category": "prepositions",
-    "input": "He depends of me.",
-    "expected": "He depends on me."
-  },
-  {
-    "category": "pronouns",
-    "input": "Her is my friend. ",
-    "expected": "She is my friend."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "My friend and I is happy.",
-    "expected": "My friend and I are happy."
-  },
-  {
-    "category": "pronouns",
-    "input": "Her is my friend.  ",
-    "expected": "She is my friend."
-  },
-  {
-    "category": "spelling",
-    "input": "I alwasy forget.",
-    "expected": "I always forget."
-  },
-  {
-    "category": "punctuation",
-    "input": "He said hello how are you",
-    "expected": "He said, \"Hello, how are you?\""
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "The dogs runs fast. ",
-    "expected": "The dogs run fast."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo.  ",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "prepositions",
-    "input": "She is good in math.",
-    "expected": "She is good at math."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "They plays football. ",
-    "expected": "They play football."
-  },
-  {
-    "category": "pronouns",
-    "input": "I gave it to she.  ",
-    "expected": "I gave it to her."
-  },
-  {
-    "category": "spelling",
-    "input": "He commited mistake. ",
-    "expected": "He committed mistake."
-  },
-  {
-    "category": "mixed",
-    "input": "i seen him he was go market",
-    "expected": "I saw him. He was going to the market."
-  },
-  {
-    "category": "articles",
-    "input": "I saw elephant in zoo.   ",
-    "expected": "I saw an elephant in the zoo."
-  },
-  {
-    "category": "pronouns",
-    "input": "Them are coming.",
-    "expected": "They are coming."
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "The dogs runs fast. ",
-    "expected": "The dogs run fast."
-  },
-  {
-    "category": "pronouns",
-    "input": "Me and him went there.",
-    "expected": "He and I went there."
-  },
-  {
-    "category": "mixed",
-    "input": "she dont like apples",
-    "expected": "She doesn't like apples."
-  },
-  {
-    "category": "punctuation",
-    "input": "No way thats true",
-    "expected": "No way, that's true!"
-  },
-  {
-    "category": "subject_verb_agreement",
-    "input": "She go to school daily. ",
-    "expected": "She goes to school daily."
-  }
+    "input": "him and me was waiting outside",
+    "expected": "He and I were waiting outside."
+    }
 ]
