@@ -3,7 +3,7 @@ from .aicorrector import ai_corrector
 import re
 from difflib import SequenceMatcher
 
-tool = language_tool_python.LanguageTool("en-US")
+tool = language_tool_python.LanguageToolPublicAPI("en-US")
 
 SKIP_RULES = {'WHITESPACE_RULE', 'PUNCTUATION_PARAGRAPH_END', 'SENTENCE_WHITESPACE'}
 
