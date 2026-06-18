@@ -24,7 +24,7 @@ google-auth-httplib2==0.4.0
 google-generativeai==0.8.6
 googleapis-common-protos==1.75.0
 grpcio==1.81.1
-grpcio-status>=1.75.1,<2.0.0
+grpcio-status==1.81.1
 gunicorn==26.0.0
 h11==0.16.0
 hf-xet==1.5.0
@@ -43,7 +43,6 @@ networkx==3.6.1
 numpy==2.4.6
 packaging==26.2
 proto-plus==1.28.0
-protobuf==5.29.6
 psutil==7.2.2
 pyasn1==0.6.3
 pyasn1_modules==0.4.2
@@ -66,7 +65,6 @@ rignore==0.7.6
 sentry-sdk==2.61.1
 setuptools==81.0.0
 shellingham==1.5.4
-starlette==1.2.1
 sympy==1.14.0
 toml==0.10.2
 tqdm==4.67.3
