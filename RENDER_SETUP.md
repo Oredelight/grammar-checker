@@ -1,40 +1,45 @@
-# Render Deployment Setup - Local LanguageTool Server
+# Render Deployment Setup - Local LanguageTool Server (Docker)
 
 ## Changes Made
 
-1. **build.sh** — Build script that installs Java runtime before installing Python dependencies
-2. **render.yaml** — Configuration file for Render deployment
-3. **grammarchecker.py** — Updated to use local LanguageTool server instead of public API
+1. **Dockerfile** — Builds a Docker image with Java runtime and Python dependencies
+2. **render.yaml** — Configuration for Docker deployment
+3. **grammarchecker.py** — Uses local LanguageTool server instead of public API
 
 ## Render Configuration Steps
 
-1. **Push your changes** to your GitHub repository (including `build.sh` and `render.yaml`)
+### Option 1: Using Render Dashboard (Recommended)
+1. Go to your Render service
+2. Click **Settings**
+3. Under **Build & Deploy**, change **Environment** from "Python" to "Docker"
+4. Save and click **Deploy**
+5. Render will automatically detect the Dockerfile and build from it
 
-2. **In Render Dashboard:**
-   - Go to your Web Service
-   - Click **Settings**
-   - Scroll to **Build & Deploy**
-   - Change **Build Command** to: `./build.sh`
-   - Change **Start Command** to: `python -m uvicorn main:app --host 0.0.0.0 --port $PORT`
+### Option 2: Using render.yaml
+- The `render.yaml` file is already configured for Docker deployment
+- Just push your changes and redeploy
 
-3. **Alternative (If using render.yaml):**
-   - Render can read `render.yaml` automatically
-   - Make sure the file is in your repository root
-   - Redeploy to apply settings
+## How It Works
 
-4. **Deploy**
-   - Click **Deploy** to trigger a new build
-   - The build will now install Java and use the local LanguageTool server
+1. Render detects `Dockerfile` in your repository
+2. Builds a Docker image that:
+   - Starts with Python 3.11 slim image
+   - Installs Java runtime (required for LanguageTool server)
+   - Installs Python dependencies from `requirements.txt`
+   - Runs your FastAPI app on port 8000
+3. Local LanguageTool server starts automatically with your app
 
 ## Benefits
 
-✅ No rate limits — local server can handle unlimited requests  
-✅ No Java dependency errors — Java is installed during build  
-✅ Fallback to AI — if LanguageTool fails to start, uses AI corrections only  
-✅ Free — no additional costs beyond Render hosting
+✅ Java installed without read-only filesystem issues  
+✅ No rate limits — unlimited local grammar checking  
+✅ Full control over runtime environment  
+✅ Automatic fallback to AI if LanguageTool fails  
+✅ Free (included in Render pricing)
 
 ## Troubleshooting
 
-- If build takes >30 minutes, Java download might timeout (increase build timeout in Render)
-- Check deploy logs for "LanguageTool" to verify it initialized successfully
-- If local server fails to start, you'll automatically fall back to AI corrections
+- **Build is slow?** First Docker build takes 3-5 minutes due to Java installation. Subsequent deploys are faster.
+- **Out of memory?** Upgrade to a larger Render plan if needed.
+- **LanguageTool not starting?** Check deploy logs. Service automatically falls back to AI corrections.
+- **Want to verify Java is installed?** Check deploy logs for "default-jre" installation messages.
