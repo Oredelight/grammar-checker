@@ -3,12 +3,19 @@ from .aicorrector import ai_corrector
 import re
 from difflib import SequenceMatcher
 
-tool = language_tool_python.LanguageToolPublicAPI("en-US")
-
 SKIP_RULES = {'WHITESPACE_RULE', 'PUNCTUATION_PARAGRAPH_END', 'SENTENCE_WHITESPACE'}
+
+_tool = None
+
+def _get_tool():
+    global _tool
+    if _tool is None:
+        _tool = language_tool_python.LanguageToolPublicAPI("en-US")
+    return _tool
 
 
 def check_grammar(text: str):
+    tool = _get_tool()
     language_matches = tool.check(text)
     language_matches = [m for m in language_matches if m.rule_id not in SKIP_RULES]
     
