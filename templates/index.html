@@ -446,59 +446,43 @@ document.getElementById('input-text').addEventListener('input', function () {
 
 /* ── Build highlighted preview ──────────────────────────────────── */
 function buildHighlightPreview(text, issues) {
-  if (!issues || issues.length === 0) return;
+    if (!issues || issues.length === 0) return;
 
-  const previewEl = document.getElementById('highlight-preview');
-  const labelEl   = document.getElementById('preview-label');
+    const previewEl = document.getElementById('highlight-preview');
+    const labelEl   = document.getElementById('preview-label');
 
-  // Collect all issue contexts with their messages, deduplicated by context
-  // We'll find every occurrence of each context in the text and mark them
-  const contexts = [];
-  const seen = new Set();
-  for (const issue of issues) {
-    if (issue.context && !seen.has(issue.context)) {
-      seen.add(issue.context);
-      contexts.push({ context: issue.context, message: issue.message });
+    // Sort by offset so we process left to right
+    const sorted = [...issues]
+        .filter(i => i.offset !== undefined && i.length > 0)
+        .sort((a, b) => a.offset - b.offset);
+
+    if (sorted.length === 0) return;
+
+    let html   = '';
+    let cursor = 0;
+
+    for (const issue of sorted) {
+        const start = issue.offset;
+        const end   = issue.offset + issue.length;
+
+        // Skip if this overlaps a previous span
+        if (start < cursor) continue;
+
+        // Text before this issue
+        html += escHtml(text.slice(cursor, start));
+
+        // The issue itself — wavy underline + tooltip
+        html += `<mark title="${escHtml(issue.message)}">${escHtml(text.slice(start, end))}</mark>`;
+
+        cursor = end;
     }
-  }
 
-  if (contexts.length === 0) return;
+    // Remaining text after last issue
+    html += escHtml(text.slice(cursor));
 
-  // Build a list of {start, end, message} spans by searching for each context
-  let spans = [];
-  for (const { context, message } of contexts) {
-    let idx = 0;
-    while (true) {
-      const pos = text.indexOf(context, idx);
-      if (pos === -1) break;
-      spans.push({ start: pos, end: pos + context.length, message });
-      idx = pos + 1;
-    }
-  }
-
-  if (spans.length === 0) return;
-
-  // Sort spans by start position, resolve overlaps (keep longest)
-  spans.sort((a, b) => a.start - b.start || b.end - a.end);
-  const merged = [];
-  for (const span of spans) {
-    if (merged.length && span.start < merged[merged.length - 1].end) continue; // skip overlapping
-    merged.push(span);
-  }
-
-  // Build HTML string
-  let html = '';
-  let cursor = 0;
-  for (const span of merged) {
-    html += escHtml(text.slice(cursor, span.start));
-    html += `<mark title="${escHtml(span.message)}">${escHtml(text.slice(span.start, span.end))}</mark>`;
-    cursor = span.end;
-  }
-  html += escHtml(text.slice(cursor));
-
-  previewEl.innerHTML = html;
-  previewEl.style.display = 'block';
-  labelEl.style.display   = 'block';
+    previewEl.innerHTML = html;
+    previewEl.style.display = 'block';
+    labelEl.style.display   = 'block';
 }
 
 /* ── Fix Grammar ────────────────────────────────────────────────── */

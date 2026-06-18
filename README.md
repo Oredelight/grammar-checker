@@ -1,75 +1,58 @@
 # Dreamy Checker - Advanced Grammar Correction System
 
-A sophisticated dual-engine grammar checking and correction system that combines rule-based detection with AI-powered corrections to provide comprehensive text refinement. Dreamy Checker uses a hybrid approach to achieve 96.23% accuracy across diverse grammar error categories.
+A sophisticated hybrid grammar checking and correction system that combines rule-based detection with Google's Gemini AI for intelligent corrections. Dreamy Checker provides comprehensive text refinement through intelligent error detection and context-aware corrections.
 
 
 ## Overview
 
-Dreamy Checker is an intelligent grammar correction tool designed to help users write better English. Unlike single-engine solutions, this system leverages both rule-based and AI-powered approaches:
+Dreamy Checker is an intelligent grammar correction tool designed to help users write better English. This system leverages both rule-based and AI-powered approaches for comprehensive grammar checking:
 
 1. **Rule-Based Engine**: LanguageTool detects grammar violations against comprehensive English rules
-2. **AI Enhancement**: Grammarly's CoEdit-Large model refines corrections with context awareness
-3. **Validation Loop**: A second pass ensures corrections are valid and improves overall quality
+2. **AI Enhancement**: Google Gemini API provides intelligent, context-aware corrections
+3. **Intelligent Chunking**: Handles long documents by splitting intelligently (max 180 words per chunk)
 
-### Why Dual-Engine?
-- **Precision**: Rule-based engine catches technical grammar errors
-- **Context**: AI model understands meaning and improves fluency
-- **Reliability**: Validation loop prevents over-corrections
-- **Accuracy**: 96.23% success rate on diverse test cases
+### Why Hybrid Approach?
+- **Precision**: Rule-based engine catches technical grammar errors with reliable patterns
+- **Intelligence**: Gemini AI understands context and improves fluency naturally
+- **Scalability**: Intelligently chunks text to handle documents of any length
+- **Reliability**: Filters out false positives and noisy rules
 
 ## Features
 
 ### Core Capabilities
-- **Hybrid Grammar Correction**: Combines LanguageTool rule-based checking with AI-powered Grammarly CoEdit model
-- **Dual-Pass Refinement**: First pass uses LanguageTool, second pass uses CoEdit-Large model
-- **REST API**: FastAPI-based endpoint for programmatic access with full request validation
-- **Interactive Web UI**: Beautiful, responsive interface with real-time grammar checking
-- **Comprehensive Issue Detection**: Identifies grammar errors, spelling, style, punctuation, and more
+- **Hybrid Grammar Correction**: Combines LanguageTool rule-based checking with Google Gemini AI
+- **Dual-Layer Detection**: First pass uses LanguageTool rules, second pass uses AI analysis
+- **REST API**: FastAPI-based endpoint for programmatic access with request validation
+- **Interactive Web UI**: Clean, responsive interface with real-time grammar checking
+- **Comprehensive Issue Detection**: Identifies grammar errors, spelling, capitalization, punctuation, and more
 - **Contextual Analysis**: Returns context for each detected issue to help users understand the error
-- **GPU Acceleration**: Supports CUDA for dramatically faster AI model inference (50% faster)
 - **Intelligent Text Chunking**: Handles long documents by splitting intelligently (max 180 words per chunk)
-- **Smart Filtering**: Removes false positives by filtering noisy rules
-
-### Supported Error Categories
-
-The system reliably corrects:
-- ✅ **Articles** (a/an/the usage)
-- ✅ **Capitalization** (proper nouns, sentence starts)
-- ✅ **Possessives** (apostrophe placement)
-- ✅ **Prepositions** (in/on/at/by, etc.)
-- ✅ **Pronouns** (he/she/they agreement)
-- ✅ **Punctuation** (commas, periods, semicolons)
-- ✅ **Spelling** (typos and misspellings)
-- ✅ **Subject-Verb Agreement** (plural/singular matching)
-- ✅ **Tense** (past, present, future consistency)
-- ✅ **Mixed Errors** (combination of multiple issues)
+- **Smart Filtering**: Removes false positives by filtering noisy LanguageTool rules
 
 ## Technology Stack
 
 ### Backend Architecture
-| Component | Technology | Version | Purpose |
-|-----------|-----------|---------|---------|
-| **Web Framework** | FastAPI | 0.136.3 | Modern async API server |
-| **ASGI Server** | Uvicorn | Latest | Production-ready server |
-| **Grammar Engine** | language-tool-python | 3.4 | Rule-based error detection |
-| **AI Model** | Transformers (Hugging Face) | Latest | Pre-trained NLP models |
-| **Deep Learning** | PyTorch | 2.x | GPU-accelerated inference |
-| **Data Validation** | Pydantic | 2.13.4 | Request/response validation |
-| **Templating** | Jinja2 | 3.1.6 | HTML template rendering |
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **Web Framework** | FastAPI 0.136.3 | Modern async API server |
+| **ASGI Server** | Uvicorn | Production-ready server |
+| **Grammar Engine** | language-tool-python 3.4 | Rule-based error detection |
+| **AI Provider** | Google Gemini API | Context-aware AI corrections |
+| **Data Validation** | Pydantic 2.13.4 | Request/response validation |
+| **Templating** | Jinja2 3.1.6 | HTML template rendering |
+| **Configuration** | python-dotenv | Environment variable management |
 
 ### Frontend Stack
 - **HTML5**: Semantic markup
 - **CSS3**: Responsive design with custom styling
-- **Canvas API**: Animated star background effects
 - **Vanilla JavaScript**: DOM manipulation and API communication
 - **Design**: Pink/dreamy theme with accessibility considerations
 
 ### Key Dependencies Explained
 ```
 Core Processing:
-  - torch: GPU-enabled tensor operations
-  - transformers: State-of-the-art NLP models
-  - language-tool-python: Comprehensive grammar rules
+  - language-tool-python: Comprehensive grammar rules (English)
+  - google-genai: Google Gemini API client for AI corrections
 
 Web Services:
   - fastapi: Async request handling
@@ -101,14 +84,13 @@ grammer-checker/
 ├── services/                   # Business logic layer
 │   ├── __init__.py
 │   ├── grammarchecker.py      # Core grammar checking orchestration
-│   ├── aicorrector.py         # AI model integration and inference
-│   ├── schemas.py             # Pydantic data models and validators
-│   ├── rules.py               # Grammar rules configuration and management
+│   ├── aicorrector.py         # Google Gemini AI integration
+│   └── schemas.py             # Pydantic data models and validators
 │
 ├── evaluation/                 # Quality assurance
 │   ├── __init__.py
 │   ├── evaluate.py            # Test execution and reporting
-│   └── test_cases.json        # 53 test cases with expected outputs
+│   └── test_cases.json        # Test cases with expected outputs
 │
 └── templates/                  # Frontend
     └── index.html             # Interactive web UI
@@ -143,21 +125,21 @@ grammer-checker/
 │         Primary orchestration logic:                     │
 │  1. Initial LanguageTool pass                            │
 │  2. Extract issues and context                           │
-│  3. Apply first corrections                              │
-│  4. Call AI corrector                                    │
-│  5. Final LanguageTool validation pass                   │
+│  3. Call Google Gemini AI for corrections                │
+│  4. Diff original vs corrected text                      │
+│  5. Merge and deduplicate issues                         │
 └────┬────────────────────────────┬───────────────────────┘
      │                            │
      ▼                            ▼
 ┌──────────────────┐    ┌──────────────────────────┐
-│  LanguageTool    │    │   AI Corrector Service   │
+│  LanguageTool    │    │ Google Gemini AI Service │
 │ (Rule-based)     │    │ (services/aicorrector.py)│
 │                  │    │                          │
-│ • 50+ grammar    │    │ • CoEdit-Large model     │
-│   rules          │    │ • GPU acceleration       │
-│ • English US     │    │ • Text chunking (180w)   │
-│ • 5 suggestions  │    │ • Beam search (b=2)      │
-│ • Fast matching  │    │ • Context aware          │
+│ • 50+ grammar    │    │ • Natural language AI    │
+│   rules          │    │ • Context-aware prompts  │
+│ • English US     │    │ • Intelligent chunking   │
+│ • Pattern match  │    │ • API-based (cloud)      │
+│ • Fast detection │    │ • Graceful fallback      │
 └──────────────────┘    └──────────────────────────┘
 ```
 
@@ -168,9 +150,8 @@ Before installation, ensure you have:
 - **Python 3.8+** (tested on 3.10 and 3.11)
 - **pip** package manager
 - **Virtual environment** support (venv or conda)
-- **8GB+ RAM** for comfortable operation
-- **GPU (Optional)**: CUDA 11.8+ for ~50% faster inference
-- **~4GB Disk Space**: For model weights and dependencies
+- **Google Gemini API Key** (Free tier available at https://aistudio.google.com/)
+- **~2GB Disk Space**: For dependencies
 
 ### Step-by-Step Installation
 
@@ -200,12 +181,17 @@ pip install --upgrade pip
 
 # Install all dependencies
 pip install -r requirements.txt
-
-# For GPU support (CUDA 11.8+)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
-#### 4. Verify Installation
+#### 4. Set Up Environment Variables
+```bash
+# Create .env file in project root
+echo GEMINI_API_KEY=your_api_key_here > .env
+
+# Get your API key from: https://aistudio.google.com/
+```
+
+#### 5. Verify Installation
 ```bash
 # Check Python version
 python --version
@@ -213,18 +199,11 @@ python --version
 # Test FastAPI
 python -c "import fastapi; print(f'FastAPI {fastapi.__version__}')"
 
-# Test PyTorch
-python -c "import torch; print(f'PyTorch {torch.__version__}'); print(f'CUDA available: {torch.cuda.is_available()}')"
-
 # Test language tools
 python -c "import language_tool_python; print('Language Tool ready')"
-```
 
-#### 5. Download Models (Automatic on First Run)
-```bash
-# Models will download automatically when the app first runs
-# Or manually pre-download:
-python -c "from transformers import AutoModel; AutoModel.from_pretrained('grammarly/coedit-large')"
+# Test Gemini client
+python -c "import google.genai; print('Gemini API ready')"
 ```
 
 ## Running the Application
@@ -237,7 +216,6 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 # Output:
 # INFO:     Uvicorn running on http://0.0.0.0:8000
 # INFO:     Application startup complete
-# INFO:     Uvicorn running on http://0.0.0.0:8000
 ```
 
 Then open: `http://localhost:8000/dreamy-checker`
@@ -246,18 +224,6 @@ Then open: `http://localhost:8000/dreamy-checker`
 ```bash
 # Multi-worker production setup
 uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
-
-# With custom timeout
-uvicorn main:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 600
-```
-
-### Docker Deployment (Optional)
-```bash
-# Build image
-docker build -t dreamy-checker .
-
-# Run container
-docker run -p 8000:8000 --gpus all dreamy-checker
 ```
 
 ### Testing the Installation
@@ -427,82 +393,62 @@ GET /openapi.json   # OpenAPI spec
 5. Copy corrected text or try again
 ```
 
+## How It Works
 
+### Dual-Layer Grammar Checking Process
 
-**Model Details**:
-- **Name**: grammarly/coedit-large
-- **Type**: Seq2Seq Transformer
-- **Training Data**: Extensive grammar correction corpus
-- **Output**: Natural, grammatically correct text
+**Layer 1: Rule-Based Detection (LanguageTool)**
+- Detects issues using 50+ predefined grammar rules
+- Fast pattern matching on original text
+- Provides rule-based suggestions
+- Filters out noisy rules (SKIP_RULES)
 
-**Inference Process**:
-1. Split text into chunks (max 180 words)
-2. Add "grammar: " prefix for task specification
-3. Tokenize with max_length=512
-4. Generate with beam search (num_beams=2)
-5. Decode output skipping special tokens
-6. Combine all chunks with space separator
+**Layer 2: AI-Powered Refinement (Google Gemini)**
+- Splits text into intelligent chunks (max 180 words)
+- Sends each chunk to Gemini API with grammar correction prompt
+- Context-aware corrections using LLM understanding
+- Gracefully falls back to original text if API unavailable
 
-**GPU Acceleration**:
-- Automatically detects CUDA availability
-- Falls back to CPU if GPU unavailable
-- 50% faster on GPU for typical requests
+**Integration & Deduplication**
+- Compares original vs. AI-corrected text using SequenceMatcher
+- Extracts differences at word level
+- Merges issues from both layers
+- Removes duplicate/overlapping issues
+- Returns comprehensive issue list with context
 
-
-``
-
-DREAMY CHECKER EVALUATION REPORT
-
-
-
-### Detailed Analysis
-
-**Performance Metrics**:
-- **Overall Success Rate**: 96.23% (51 of 53 tests passing)
-- **Perfect Categories**: 8 out of 10 (80%)
-- **Average Processing Time**: 1.41 seconds
-- **Precision**: High confidence in corrections
-- **Recall**: Catches most errors
-
-**Category Performance**:
-
-| Category | Tests | Passed | Rate | Status |
-|----------|-------|--------|------|--------|
-| Articles | 5 | 5 | 100% | ✓ Excellent |
-| Capitalization | 5 | 5 | 100% | ✓ Excellent |
-| Mixed Errors | 6 | 6 | 100% | ✓ Excellent |
-| Possessives | 5 | 5 | 100% | ✓ Excellent |
-| Prepositions | 5 | 5 | 100% | ✓ Excellent |
-| Pronouns | 6 | 5 | 83% | ⚠ Good |
-| Punctuation | 5 | 5 | 100% | ✓ Excellent |
-| Spelling | 5 | 5 | 100% | ✓ Excellent |
-| Subject-Verb Agr. | 5 | 5 | 100% | ✓ Excellent |
-| Tense | 6 | 5 | 83% | ⚠ Good |
-
-**Strengths**:
-- Exceptional at structural errors (articles, prepositions)
-- Perfect spelling and capitalization correction
-- Handles complex mixed errors well
-- Fast processing even on CPU
-
-**Areas for Improvement**:
-- Pronoun disambiguation (5/6 cases)
-- Complex tense shifts (5/6 cases)
+### API Features
+- **Graceful Degradation**: Works even if Gemini API is unavailable (returns LanguageTool results)
+- **Auto-Chunking**: Handles documents of any length
+- **Context Preservation**: Maintains semantic meaning while correcting grammar
 
 
 
 ### Running Tests
 
 ```bash
-# Execute full evaluation suite
+# Execute evaluation suite
 python -m evaluation.evaluate
 
 # Output includes:
-# - Overall success rate
-# - Category-by-category breakdown
+# - Test results for each category
+# - Overall success metrics
 # - Average response time
 # - Failed case details
 ```
+
+### Test Cases
+
+Test cases are stored in `evaluation/test_cases.json` and cover:
+- Articles (a/an/the usage)
+- Capitalization (proper nouns, sentence starts)
+- Mixed Errors (combination of multiple issues)
+- Possessives (apostrophe placement)
+- Prepositions (in/on/at/by, etc.)
+- Pronouns (he/she/they agreement)
+- Punctuation (commas, periods, semicolons)
+- Spelling (typos and misspellings)
+- Subject-Verb Agreement (plural/singular matching)
+- Tense (past, present, future consistency)
 
 
 
@@ -540,11 +486,11 @@ Test cases are stored in `evaluation/test_cases.json`:
 
 | Symptom | Likely Cause | Solution |
 |---------|---------|----------|
-| First request slow | Model loading | Normal, 3-5s expected |
-| Subsequent requests slow | CPU inference | Enable GPU |
-| Memory errors | Models too large | Reduce batch size |
-| Hanging requests | Bad text input | Validate input |
-| No output | Network issue | Check API connection |
+| No corrections provided | Gemini API key missing/invalid | Add GEMINI_API_KEY to .env |
+| Slow API responses | Rate limiting | Check Gemini API quota |
+| LanguageTool only results | Gemini API unavailable | Check API connection, see logs |
+| Empty text error | Invalid input | Provide non-empty text |
+| Text not chunking properly | Large document | Check text formatting |
 
 
 ## Deployment
@@ -567,8 +513,14 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 **Build and Run**:
 ```bash
+# Build image
 docker build -t dreamy-checker .
-docker run -p 8000:8000 --gpus all dreamy-checker
+
+# Run with environment variable
+docker run -p 8000:8000 -e GEMINI_API_KEY=your_key_here dreamy-checker
+
+# Or with .env file
+docker run -p 8000:8000 --env-file .env dreamy-checker
 ```
 
 ### How to Contribute
@@ -583,5 +535,5 @@ docker run -p 8000:8000 --gpus all dreamy-checker
 ---
 
 **Last Updated**: June 2026\
-**Status**: Production Ready (v1.0)\
-**Test Coverage**: 96.23% accuracy across 53 test cases
+**AI Engine**: Google Gemini API\
+**Architecture**: Hybrid (Rule-based + AI-powered)

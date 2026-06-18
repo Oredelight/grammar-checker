@@ -12,6 +12,8 @@ class GrammarInput(BaseModel):
 class Issue(BaseModel):
     message: str
     context: str
+    offset: int
+    length: int
 
 class GrammarOutput(BaseModel):
     original: str

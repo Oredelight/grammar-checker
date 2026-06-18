@@ -1,32 +1,31 @@
-import torch
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import os
 import re
+import time
 
-MODEL_NAME = "grammarly/coedit-large"
+from google import genai
+from dotenv import load_dotenv
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+load_dotenv()
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME).to(device)
+api_key = os.getenv("GEMINI_API_KEY")
+client = None
+if api_key:
+    try:
+        client = genai.Client(api_key=api_key)
+    except Exception as e:
+        print(f"Warning: Could not initialize Gemini client: {e}")
 
-model.eval()
 
-def split_text(text, max_words=180):
-
+def split_text(text: str, max_words: int = 180) -> list[str]:
     sentences = re.split(r'(?<=[.!?])\s+', text)
-
-    chunks = []
-    current = []
-
-    current_len = 0
+    chunks, current, current_len = [], [], 0
 
     for sentence in sentences:
         word_count = len(sentence.split())
 
         if current_len + word_count > max_words:
             chunks.append(" ".join(current))
-            current = [sentence]
-            current_len = word_count
+            current, current_len = [sentence], word_count
         else:
             current.append(sentence)
             current_len += word_count
@@ -36,36 +35,36 @@ def split_text(text, max_words=180):
 
     return chunks
 
-def ai_corrector(text: str):
 
+def ai_corrector(text: str) -> str:
+    """Apply AI-based grammar correction. Falls back to original text if API unavailable."""
+    if not client:
+        return text
+    
     chunks = split_text(text)
-
     results = []
 
     for chunk in chunks:
+        prompt = f"""You are a grammar correction engine.
 
-        prompt = f"Correct grammar without changing meaning: {chunk}"
+Correct only grammar, spelling, capitalization, and punctuation.
+Do not rewrite sentences.
+Do not change meaning.
+Do not add or remove information.
+Do not include any labels, headings, or explanations.
+Return only the corrected text with no extra formatting.
 
-        inputs = tokenizer(
-            prompt,
-            return_tensors="pt",
-            truncation=True,
-            max_length=512
-        ).to(device)
-
-        with torch.no_grad():
-            outputs = model.generate(
-                **inputs,
-                max_new_tokens=128,
-                num_beams=1,
-                do_sample=False
+Text:
+{chunk}
+"""
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt
             )
+            results.append(response.text.strip())
+        except Exception as e:
+            print(f"Gemini API error: {e}. Using original text.")
+            results.append(chunk)
 
-        corrected = tokenizer.decode(
-            outputs[0],
-            skip_special_tokens=True
-        )
-
-        results.append(corrected)
-
-    return " ".join(results)
+    return re.sub(r' +', ' ', " ".join(results)).strip()
