@@ -1,23 +1,41 @@
 import language_tool_python
+from language_tool_python.exceptions import RateLimitError
 from .aicorrector import ai_corrector
 import re
 from difflib import SequenceMatcher
+import logging
+
+logger = logging.getLogger(__name__)
 
 SKIP_RULES = {'WHITESPACE_RULE', 'PUNCTUATION_PARAGRAPH_END', 'SENTENCE_WHITESPACE'}
 
 _tool = None
+_initialization_failed = False
 
 def _get_tool():
-    global _tool
-    if _tool is None:
-        _tool = language_tool_python.LanguageToolPublicAPI("en-US")
+    global _tool, _initialization_failed
+    if _tool is None and not _initialization_failed:
+        try:
+            # Use local LanguageTool server (no rate limits)
+            _tool = language_tool_python.LanguageTool("en-US")
+        except Exception as e:
+            logger.warning(f"Failed to initialize local LanguageTool server: {e}. Will use AI corrections only.")
+            _initialization_failed = True
+            return None
     return _tool
 
 
 def check_grammar(text: str):
     tool = _get_tool()
-    language_matches = tool.check(text)
-    language_matches = [m for m in language_matches if m.rule_id not in SKIP_RULES]
+    language_matches = []
+    
+    if tool is not None:
+        try:
+            language_matches = tool.check(text)
+            language_matches = [m for m in language_matches if m.rule_id not in SKIP_RULES]
+        except Exception as e:
+            logger.warning(f"LanguageTool check failed: {e}")
+            language_matches = []
     
     ai_output = ai_corrector(text)
     
