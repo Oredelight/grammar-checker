@@ -16,10 +16,11 @@ def _get_tool():
     global _tool, _initialization_failed
     if _tool is None and not _initialization_failed:
         try:
-            # Use local LanguageTool server (no rate limits)
+            logger.info("Initializing LanguageTool...")
             _tool = language_tool_python.LanguageTool("en-US")
+            logger.info("LanguageTool initialized successfully")
         except Exception as e:
-            logger.warning(f"Failed to initialize local LanguageTool server: {e}. Will use AI corrections only.")
+            logger.error(f"Failed to initialize LanguageTool: {e}. Will use AI corrections only.", exc_info=True)
             _initialization_failed = True
             return None
     return _tool
@@ -32,10 +33,14 @@ def check_grammar(text: str):
     if tool is not None:
         try:
             language_matches = tool.check(text)
+            logger.info(f"LanguageTool returned {len(language_matches)} matches before filtering")
             language_matches = [m for m in language_matches if m.rule_id not in SKIP_RULES]
+            logger.info(f"LanguageTool returned {len(language_matches)} matches after filtering")
         except Exception as e:
-            logger.warning(f"LanguageTool check failed: {e}")
+            logger.error(f"LanguageTool check failed: {e}", exc_info=True)
             language_matches = []
+    else:
+        logger.warning("LanguageTool is not available, using AI corrections only")
     
     ai_output = ai_corrector(text)
     
