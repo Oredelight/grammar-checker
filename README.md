@@ -1,42 +1,39 @@
-# Dreamy Checker - Advanced Grammar Correction System
+# Dreamy Checker - AI-Powered Grammar Correction System
 
-A sophisticated hybrid grammar checking and correction system that combines rule-based detection with Google's Gemini AI for intelligent corrections. Dreamy Checker provides comprehensive text refinement through intelligent error detection and context-aware corrections.
+An intelligent grammar checking and correction system powered by Google's Gemini AI. Dreamy Checker provides comprehensive text refinement through smart error detection and context-aware corrections with a focus on simplicity and efficiency.
 
 
 ## Overview
 
-Dreamy Checker is an intelligent grammar correction tool designed to help users write better English. This system leverages both rule-based and AI-powered approaches for comprehensive grammar checking:
+Dreamy Checker is an intelligent grammar correction tool designed to help users write better English. This system leverages Google Gemini AI for intelligent, context-aware corrections:
 
-1. **Rule-Based Engine**: LanguageTool detects grammar violations against comprehensive English rules
-2. **AI Enhancement**: Google Gemini API provides intelligent, context-aware corrections
-3. **Intelligent Chunking**: Handles long documents by splitting intelligently (max 180 words per chunk)
+1. **AI-Powered Engine**: Google Gemini API provides intelligent, context-aware corrections
+2. **Intelligent Chunking**: Handles long documents by splitting intelligently (max 180 words per chunk)
+3. **Lightweight & Fast**: Minimal memory footprint, optimized for deployment on resource-constrained servers
 
-### Why Hybrid Approach?
-- **Precision**: Rule-based engine catches technical grammar errors with reliable patterns
+### Why AI-Only?
 - **Intelligence**: Gemini AI understands context and improves fluency naturally
-- **Scalability**: Intelligently chunks text to handle documents of any length
-- **Reliability**: Filters out false positives and noisy rules
+- **Efficiency**: Minimal dependencies and memory usage
+- **Context-Aware**: Better understanding of nuanced grammar issues
+- **Scalability**: Perfect for deployment on limited server resources
 
 ## Features
 
 ### Core Capabilities
-- **Hybrid Grammar Correction**: Combines LanguageTool rule-based checking with Google Gemini AI
-- **Dual-Layer Detection**: First pass uses LanguageTool rules, second pass uses AI analysis
+- **AI Grammar Correction**: Google Gemini AI for intelligent correction
 - **REST API**: FastAPI-based endpoint for programmatic access with request validation
 - **Interactive Web UI**: Clean, responsive interface with real-time grammar checking
 - **Comprehensive Issue Detection**: Identifies grammar errors, spelling, capitalization, punctuation, and more
 - **Contextual Analysis**: Returns context for each detected issue to help users understand the error
 - **Intelligent Text Chunking**: Handles long documents by splitting intelligently (max 180 words per chunk)
-- **Smart Filtering**: Removes false positives by filtering noisy LanguageTool rules
 
 ## Technology Stack
 
 ### Backend Architecture
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
-| **Web Framework** | FastAPI 0.136.3 | Modern async API server |
+| **Web Framework** | FastAPI 0.137.2 | Modern async API server |
 | **ASGI Server** | Uvicorn | Production-ready server |
-| **Grammar Engine** | language-tool-python 3.4 | Rule-based error detection |
 | **AI Provider** | Google Gemini API | Context-aware AI corrections |
 | **Data Validation** | Pydantic 2.13.4 | Request/response validation |
 | **Templating** | Jinja2 3.1.6 | HTML template rendering |
@@ -50,18 +47,16 @@ Dreamy Checker is an intelligent grammar correction tool designed to help users 
 
 ### Key Dependencies Explained
 ```
-Core Processing:
-  - language-tool-python: Comprehensive grammar rules (English)
-  - google-genai: Google Gemini API client for AI corrections
-
 Web Services:
   - fastapi: Async request handling
   - uvicorn: Production ASGI server
   - jinja2: Template rendering
 
+AI Integration:
+  - google-genai: Google Gemini API client for AI corrections
+
 Data Handling:
   - pydantic: Type-safe validation
-  - python-multipart: Form data parsing
 
 Utilities:
   - python-dotenv: Environment configuration
@@ -123,24 +118,23 @@ grammer-checker/
 │                   Grammar Checker                        │
 │            (services/grammarchecker.py)                  │
 │         Primary orchestration logic:                     │
-│  1. Initial LanguageTool pass                            │
-│  2. Extract issues and context                           │
-│  3. Call Google Gemini AI for corrections                │
-│  4. Diff original vs corrected text                      │
-│  5. Merge and deduplicate issues                         │
-└────┬────────────────────────────┬───────────────────────┘
-     │                            │
-     ▼                            ▼
-┌──────────────────┐    ┌──────────────────────────┐
-│  LanguageTool    │    │ Google Gemini AI Service │
-│ (Rule-based)     │    │ (services/aicorrector.py)│
-│                  │    │                          │
-│ • 50+ grammar    │    │ • Natural language AI    │
-│   rules          │    │ • Context-aware prompts  │
-│ • English US     │    │ • Intelligent chunking   │
-│ • Pattern match  │    │ • API-based (cloud)      │
-│ • Fast detection │    │ • Graceful fallback      │
-└──────────────────┘    └──────────────────────────┘
+│  1. Call Google Gemini AI for corrections                │
+│  2. Diff original vs corrected text                      │
+│  3. Extract issues from differences                      │
+│  4. Return formatted results                             │
+└────────────┬────────────────────────────────────────────┘
+             │
+             ▼
+┌──────────────────────────────────┐
+│  Google Gemini AI Service        │
+│  (services/aicorrector.py)       │
+│                                  │
+│ • Natural language AI            │
+│ • Context-aware prompts          │
+│ • Intelligent chunking           │
+│ • API-based (cloud)              │
+│ • Free tier available            │
+└──────────────────────────────────┘
 ```
 
 ## Installation & Setup
@@ -151,7 +145,7 @@ Before installation, ensure you have:
 - **pip** package manager
 - **Virtual environment** support (venv or conda)
 - **Google Gemini API Key** (Free tier available at https://aistudio.google.com/)
-- **~2GB Disk Space**: For dependencies
+- **~500MB Disk Space**: For dependencies (much smaller without LanguageTool)
 
 ### Step-by-Step Installation
 
@@ -199,9 +193,6 @@ python --version
 # Test FastAPI
 python -c "import fastapi; print(f'FastAPI {fastapi.__version__}')"
 
-# Test language tools
-python -c "import language_tool_python; print('Language Tool ready')"
-
 # Test Gemini client
 python -c "import google.genai; print('Gemini API ready')"
 ```
@@ -218,7 +209,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 # INFO:     Application startup complete
 ```
 
-Then open: `http://localhost:8000/dreamy-checker`
+Then open: `http://localhost:8000/`
 
 ### Production Server
 ```bash
@@ -258,7 +249,7 @@ http://localhost:8000
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
 | POST | `/check-grammar` | Check and correct grammar |
-| GET | `/dreamy-checker` | Interactive web interface |
+| GET | `/` | Interactive web interface |
 | GET | `/docs` | Swagger UI documentation |
 | GET | `/redoc` | ReDoc API documentation |
 
@@ -395,31 +386,26 @@ GET /openapi.json   # OpenAPI spec
 
 ## How It Works
 
-### Dual-Layer Grammar Checking Process
+### AI-Powered Grammar Checking Process
 
-**Layer 1: Rule-Based Detection (LanguageTool)**
-- Detects issues using 50+ predefined grammar rules
-- Fast pattern matching on original text
-- Provides rule-based suggestions
-- Filters out noisy rules (SKIP_RULES)
-
-**Layer 2: AI-Powered Refinement (Google Gemini)**
-- Splits text into intelligent chunks (max 180 words)
+**Grammar Correction Flow**
+- Receives user text input
+- Splits text into intelligent chunks (max 180 words for optimal API performance)
 - Sends each chunk to Gemini API with grammar correction prompt
 - Context-aware corrections using LLM understanding
 - Gracefully falls back to original text if API unavailable
 
-**Integration & Deduplication**
+**Issue Detection & Reporting**
 - Compares original vs. AI-corrected text using SequenceMatcher
 - Extracts differences at word level
-- Merges issues from both layers
-- Removes duplicate/overlapping issues
-- Returns comprehensive issue list with context
+- Returns comprehensive issue list with context and suggested corrections
+- Highlights specific problem areas to help users understand errors
 
 ### API Features
-- **Graceful Degradation**: Works even if Gemini API is unavailable (returns LanguageTool results)
+- **Graceful Degradation**: Works even if Gemini API is temporarily unavailable
 - **Auto-Chunking**: Handles documents of any length
 - **Context Preservation**: Maintains semantic meaning while correcting grammar
+- **Fast Processing**: Minimal overhead with optimized chunking
 
 
 
@@ -487,40 +473,43 @@ Test cases are stored in `evaluation/test_cases.json`:
 | Symptom | Likely Cause | Solution |
 |---------|---------|----------|
 | No corrections provided | Gemini API key missing/invalid | Add GEMINI_API_KEY to .env |
-| Slow API responses | Rate limiting | Check Gemini API quota |
-| LanguageTool only results | Gemini API unavailable | Check API connection, see logs |
+| Slow API responses | Rate limiting or large text | Check Gemini API quota, reduce text size |
 | Empty text error | Invalid input | Provide non-empty text |
-| Text not chunking properly | Large document | Check text formatting |
+| Text not chunking properly | Large document | Check text formatting, ensure UTF-8 encoding |
 
 
 ## Deployment
 
-### Docker Deployment
+### Render.com Deployment
 
-**Dockerfile**:
-```dockerfile
-FROM python:3.11-slim
+The application is optimized for deployment on Render's free tier using Python native runtime:
 
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+**Configuration (render.yaml)**:
+```yaml
+services:
+  - type: web
+    name: grammer-checker
+    env: python
+    plan: standard
+    startCommand: python -m uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-**Build and Run**:
+**Environment Variables** on Render:
+1. Add `GEMINI_API_KEY` in your Render dashboard environment variables
+2. Commit and push your code to trigger automatic deployment
+
+**Memory Optimization**:
+- Removed LanguageTool (259MB) for minimal memory footprint
+- ~50MB of dependencies only
+- Perfect for 512MB free tier instances
+
+### Other Hosting Platforms
+
+Works on any platform supporting Python (Heroku, Railway, Vercel with serverless, AWS Lambda, GCP Cloud Run, etc.)
+
+**Basic Command**:
 ```bash
-# Build image
-docker build -t dreamy-checker .
-
-# Run with environment variable
-docker run -p 8000:8000 -e GEMINI_API_KEY=your_key_here dreamy-checker
-
-# Or with .env file
-docker run -p 8000:8000 --env-file .env dreamy-checker
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
 ### How to Contribute
@@ -536,4 +525,4 @@ docker run -p 8000:8000 --env-file .env dreamy-checker
 
 **Last Updated**: June 2026\
 **AI Engine**: Google Gemini API\
-**Architecture**: Hybrid (Rule-based + AI-powered)
+**Architecture**: AI-powered (Cloud-based LLM)
