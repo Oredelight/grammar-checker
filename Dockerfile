@@ -11,6 +11,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Pre-download LanguageTool during build
+RUN python -c "import language_tool_python; language_tool_python.LanguageTool('en-US')" || true
+
 # Copy application code
 COPY . .
 
